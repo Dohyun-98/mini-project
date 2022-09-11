@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src/.:/server/src/.
+    ports:
+      - 80:80
+
+  DataBase:
+    image: mongo:5
+    ports:
+      - 27017:27017
