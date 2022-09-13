@@ -1,18 +1,24 @@
 import express from "express";
 import mongoose from "mongoose";
+import swaggerUi from "swagger-ui-express";
+import swaggerJSDoc from "swagger-jsdoc";
+import { options } from "../swagger/config.js";
 import { Tokens } from "../models/token.model.js";
 import { User } from "../models/user.model.js";
 import { filterPersonal } from "./util.js";
 import { getOgTag } from "./webscraping.js";
-import { isValidPhone, makeToken, sendTokenSMS } from "./phone.js";
+
 import cors from "cors";
 import "dotenv/config";
+
+import { isValidPhone, makeToken, sendTokenSMS } from "./phone.js";
 import { Coffee } from "../models/coffee.model.js";
 // express port : 80
 const port = 80;
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(options)));
 //회원가입 API
 // post-/user
 app.post("/user", async (req, res) => {
@@ -75,7 +81,7 @@ app.post("/tokens/phone", async (req, res) => {
   }
   const token = makeToken(phone);
   console.log(token);
-  // await sendTokenSMS(phone, token);
+  await sendTokenSMS(phone, token);
   const search = await Tokens.findOneAndUpdate({ phone }, { token })
     .then((result) => {
       return result;

@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import { Coffee } from "./src/coffee.model.js";
+import { crawler } from "./src/index.js";
 
 const absolutePath = "/Users/kdh/Documents/mini-project/webcrawler";
 
@@ -14,22 +15,30 @@ app.get("/", (req, res) => {
   res.sendFile(path);
 });
 
-app.post("/save/coffee", async (req, res) => {
-  let result = [];
-  for (data of req.body) {
+app.get("/save/coffee", async (req, res) => {
+  const list = await crawler();
+  const nameList = list[0];
+  const imgList = list[1];
+  let coffeeObj = [];
+  for (let i = 0; i < 10; i++) {
     const result = new Coffee({
-      name: data.name,
-      img: data.img,
+      name: nameList[i],
+      img: imgList[i],
     });
-    await result.save().then((re) => {
-      console.log(re);
-      result.push(re);
-    });
+    await result
+      .save()
+      .then((re) => {
+        coffeeObj.push(re);
+      })
+      .catch((err) => {
+        res.send(err);
+      });
   }
-  res.send(result);
+  console.log(coffeeObj);
+  res.send(coffeeObj);
 });
 
-mongoose.connect("mongodb://localhost:27017/starbucks");
+mongoose.connect("mongodb://localhost:27017/User");
 
 app.listen(port, (err) => {
   if (err) console.log(err);

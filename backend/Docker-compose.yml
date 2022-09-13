@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./src/.:/server/src/.
+      - ./swagger/.:/server/swagger/.
     ports:
       - 80:80
 
