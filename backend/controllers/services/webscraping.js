@@ -5,7 +5,6 @@ export async function getOgTag(url) {
   if (url.match("http://" || "https://") === null) {
     url = "http://" + url;
   }
-  console.log(url);
   const html = await axios.get(url);
   const $ = cheerio.load(html.data);
   let title;

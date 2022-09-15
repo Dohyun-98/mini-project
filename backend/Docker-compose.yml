@@ -6,7 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./src/.:/server/src/.
+      - ./controllers/.:/server/controllers/.
+      - ./server.js:/server/server.js
       - ./swagger/.:/server/swagger/.
     ports:
       - 80:80

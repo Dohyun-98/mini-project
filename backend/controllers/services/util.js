@@ -4,10 +4,10 @@ export function getDate() {
   const yyyy = date.getFullYear();
   const mm = date.getMonth() + 1;
   const dd = date.getDate();
-  const hh = date.getHours();
+  const hh = date.getHours() + 9;
   const min = date.getMinutes();
   const sec = date.getSeconds();
-  return `${yyyy}년 ${mm}월 ${dd}일 ${hh}-${min}-${sec}`;
+  return `${yyyy}년 ${mm}월 ${dd}일 ${hh}:${min}:${sec}`;
 }
 
 // filterPsersonal : 주민등록번호 필터링
